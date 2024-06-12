@@ -40,7 +40,7 @@ function Home() {
       {data && data.map((item) => (
         <div className="flex bg-slate-600 rounded-lg px-5 w-full pt-4  mt-3 justify-between items-center mb-3">
           <p className="text-xl font-bold">{item.title}</p>
-          <MdDelete className="mb-2" onClick={() => deleteBtn(item.id)} />
+          <MdDelete className="mb-2 cursor-pointer" onClick={() => deleteBtn(item.id)} />
         </div>
       ))}
     </div>
