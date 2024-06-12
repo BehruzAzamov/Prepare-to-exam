@@ -10,7 +10,7 @@ import MainLayout from "./layout/MainLayout";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Home from "./pages/Home";
+import { Home } from "./pages/Home";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 
 function App() {
@@ -28,12 +28,12 @@ function App() {
     {
       path: '/login',
       element: user ? <Navigate to="/" /> : <Login />,
-      action:loginAction
+      action: loginAction
     },
     {
       path: '/register',
       element: user ? <Navigate to="/" /> : <Register />,
-      action:registerAction
+      action: registerAction
     }
   ]);
 

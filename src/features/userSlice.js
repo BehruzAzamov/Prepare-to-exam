@@ -1,33 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-const defaultState = {
-  user: null,
-  authReady: false,
-  tasks: [],
-};
-
+const initialState = { user: null, authReadyState: false };
 const userSlice = createSlice({
   name: "user",
-  initialState: defaultState,
+  initialState,
   reducers: {
     login: (state, { payload }) => {
-      state.user = serializeUser(payload);
+      state.user = payload;
     },
-    logout: (state) => {
+    logout: () => {
       state.user = null;
     },
     isAuthReady: (state) => {
-      state.authReady = true;
+      state.authReadyState = true;
     },
   },
 });
-
-function serializeUser(user) {
-  return {
-    id: user.id,
-    username: user.username,
-  };
-}
-
 export const { login, logout, isAuthReady } = userSlice.actions;
 export default userSlice.reducer;
