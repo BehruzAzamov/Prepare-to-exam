@@ -4,7 +4,10 @@ import { auth } from "./firebase/firebaseConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { isAuthReady, login } from "./features/userSlice";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import { action as registerAction } from "./pages/Register";
+import { action as loginAction } from "./pages/Login";
 import MainLayout from "./layout/MainLayout";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
@@ -24,11 +27,13 @@ function App() {
     },
     {
       path: '/login',
-      element: user ? <Navigate to="/" /> : <Login />
+      element: user ? <Navigate to="/" /> : <Login />,
+      action:loginAction
     },
     {
       path: '/register',
-      element: user ? <Navigate to="/" /> : <Register />
+      element: user ? <Navigate to="/" /> : <Register />,
+      action:registerAction
     }
   ]);
 

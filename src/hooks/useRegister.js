@@ -1,35 +1,39 @@
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
-import { useState } from "react";
-import { login } from "../features/userSlice";
 import { useDispatch } from "react-redux";
+export { login } from "../features/userSlice";
 
-function useRegister() {
+export function useRegister() {
   const dispatch = useDispatch();
-  const [isPending, setIsPending] = useState(false);
-
-  const signWithGoogle = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      setIsPending(true);
-      const result = await signInWithPopup(auth, provider);
-      const user = {
-        uid: result.user.uid,
-        displayName: result.user.displayName,
-        email: result.user.email,
-      };
-      console.log(user);
-      dispatch(login(user));
-      setIsPending(false);
-    } catch (error) {
-      setIsPending(false);
-      const errorMessage = error.message;
-      alert(errorMessage);
-      const email = error.customData.email;
-    }
+  const register = (data) => {
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then(async (userCredential) => {
+        await updateProfile(auth.currentUser, {
+          displayName: data.displayName,
+          photoURL: data.photoURL,
+        });
+        dispatch(login(userCredential.user));
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+      });
+  };
+  const registerWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        const user = result.user;
+        dispatch(login(user));
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+      });
   };
 
-  return { signWithGoogle, isPending };
+  return { register, registerWithGoogle };
 }
-
-export { useRegister };
